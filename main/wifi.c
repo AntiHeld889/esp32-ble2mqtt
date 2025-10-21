@@ -119,10 +119,11 @@ eap_method_t wifi_eap_atomethod(const char *method)
 int wifi_start_ap(const char *ssid, const char *password)
 {
     wifi_config_t wifi_config = { .ap = { .max_connection = 1 } };
-    strncpy((char *)wifi_config.ap.ssid, ssid, 32);
+    strlcpy((char *)wifi_config.ap.ssid, ssid, sizeof(wifi_config.ap.ssid));
     if (password)
     {
-        strncpy((char *)wifi_config.sta.password, password, 64);
+        strlcpy((char *)wifi_config.ap.password, password,
+            sizeof(wifi_config.ap.password));
         wifi_config.ap.authmode = WIFI_AUTH_WPA2_PSK;
     }
     else
